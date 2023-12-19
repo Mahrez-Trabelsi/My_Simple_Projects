@@ -22,7 +22,6 @@ else{
     let myH4 = document.createElement("h4");
     let myH4Text = document.createTextNode(`${dateValue}, ${timeValue} ${APM}`);
     let myP = document.createElement("div");
-    myP.style.cssText = "width: 50%;margin-left: -11px;"
     myP.className = "edit";
     let myPText = document.createTextNode(document.querySelector("textarea").value);
     
@@ -87,3 +86,20 @@ document.addEventListener("click",function(e){
         e.target.parentElement.children[1].textContent = `${dateValues}, ${timeValues} ${APMs}`;
         }       
 });
+// Scroll Visiblity
+let scrollbtn = document.querySelector(".Up");
+window.onscroll = function () {
+    if (window.scrollY >= 480){
+        scrollbtn.style.display = "block";
+    }
+    else{
+        scrollbtn.style.display = "none";
+    }   
+}
+// Scroll Up
+scrollbtn.onclick = function () {
+    window.scrollTo({
+        top:0,
+        left:0,
+        behavior: "smooth",});
+}

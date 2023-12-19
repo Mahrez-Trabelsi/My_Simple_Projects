@@ -7,6 +7,21 @@ body {
     background-color: #161A30;
 }
 
+.Up{
+    position: fixed;
+    display: none;
+    bottom:20px;
+    font-size: 25px;
+    border: none;
+    padding: 5px 10px;
+    right: 20px;
+    border-radius: 15px;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    background-color: red;
+}
+
 .Title {
     padding: 10px;
     margin: 5px 10px
@@ -67,7 +82,7 @@ body {
     border: none;
     min-width: 96%;
     max-width: 96%;
-    margin: 0px 2%;
+    margin-left: -11px;
     margin-top: -15px;
     box-shadow: 3px 3px 6px -3px black;
     border-radius: 15px;
@@ -126,22 +141,26 @@ body {
 .closebtn {
     position: absolute;
     top: 2%;
-    right: 5px;
+    right: 1%;
     cursor: pointer;
 }
 
 .editbtn {
     position: absolute;
     bottom: 40%;
-    right: 5px;
+    right: 1%;
     cursor: pointer;
+    font-size: 1.2rem;
+    padding: 2px 5px;
 }
 
 .savebtn {
+    font-size: 1.2rem;
     position: absolute;
     bottom: 5px;
-    right: 5px;
+    right: 1%;
     cursor: pointer;
+    padding: 2px 3px;
 }
 
 .img1 {
@@ -153,7 +172,26 @@ body {
 }
 
 @media (max-width:767px) {
-    .img1{
+    .img1 {
         display:none;
+    }
+
+    .edit {
+        min-width: 90%;
+        max-width: 90%;
+    }
+
+    .Up {
+        padding: 2px 5px;
+        font-size: 15px;
+        right: 2%;
+    }
+    
+    .editbtn {
+        padding: 2px;
+    }
+
+    .savebtn {
+        padding: 2px;
     }
 }
