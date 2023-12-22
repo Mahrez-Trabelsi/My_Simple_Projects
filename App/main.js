@@ -1,10 +1,25 @@
+// DOM Elements
+const textareaInput = document.querySelector("textarea");
 let sub = document.getElementById("sub");
-sub.addEventListener("click", function (e) {
-if(document.querySelector("textarea").value === ""){ 
-    confirm("Note Is Empty!");
-    e.preventDefault();
+
+// array of notes
+let notes = JSON.parse(localStorage.getItem("Notes")) || [];
+
+// Add Note Function
+const addNote = (id, content) => {
+    notes.push({
+        id:id,
+        content:content
+    });
+
+    // add new added notes to localStorage
+    localStorage.setItem("Notes",JSON.stringify(notes));
+
+    return {id, content};
 }
-else{
+
+
+const createNote = (note) => {
     // Date&Time Config
     let dateNow = new Date();
     let dateValue = `${dateNow.getMonth()+1}/${dateNow.getDate()}/${dateNow.getFullYear()}`;
@@ -20,72 +35,89 @@ else{
     
     // Create HTML Elements
     let myH4 = document.createElement("h4");
-    let myH4Text = document.createTextNode(`${dateValue}, ${timeValue} ${APM}`);
+    myH4.innerText = `${dateValue}, ${timeValue} ${APM}`;
     let myP = document.createElement("div");
+    myP.innerText = note.content;
     myP.className = "edit";
-    let myPText = document.createTextNode(document.querySelector("textarea").value);
     
     //Close Button
     let closebtn = document.createElement("button");
     closebtn.className = "closebtn";
+    closebtn.innerText = "X";
     closebtn.style.cssText = "color:red ;border-radius: 15px;font-size:1em; box-shadow: 3px 3px 6px -3px black; font-weight:bold;";
-    let closebtnText = document.createTextNode("X");
 
     //Edit Button
     let editbtn = document.createElement("button");
     editbtn.className = "editbtn";
     editbtn.style.cssText = "color:red ;border-radius: 15px;font-size:1em; box-shadow: 3px 3px 6px -3px black; font-weight:bold;";
-    let editbtnText = document.createTextNode("edit");
+    editbtn.innerText = "edit";
 
     // Save Button
     let savebtn = document.createElement("button");
     savebtn.className = "savebtn";
     savebtn.style.cssText = "color:red ;border-radius: 15px;font-size:1em; box-shadow: 3px 3px 6px -3px black; font-weight:bold;";
-    let savebtnText = document.createTextNode("save");
+    savebtn.innerText = "save";
 
-    // Append Child Elements 
-    myH4.appendChild(myH4Text);
-    myP.appendChild(myPText);
-    closebtn.appendChild(closebtnText);
-    editbtn.appendChild(editbtnText);
-    savebtn.appendChild(savebtnText);
 
     //Append To Parent Element
-    addNote.appendChild(closebtn);
-    addNote.appendChild(myH4);
-    addNote.appendChild(editbtn);
-    addNote.appendChild(myP);
-    addNote.appendChild(savebtn);
+    addNote.append(closebtn,myH4,editbtn,myP,savebtn);
     
     //Add Note To Body
     document.body.append(addNote);
+}
 
-    // Restart Textarea Value To Null
-    document.querySelector("textarea").value = "";
-}});
-// Delete Note Button Function
-document.addEventListener("click", function (e)  {
-    if (e.target.className === "closebtn") {
-        e.target.parentElement.remove();
-    }});
+// Create DOM forEach Note
+notes.forEach(createNote);
 
-// Edit & Save Button Function
-document.addEventListener("click",function(e){
-    if (e.target.className  === "editbtn"){
-        e.target.nextElementSibling.setAttribute("contenteditable","true");
-        e.target.nextElementSibling.focus();
+var nb = notes.length;
+
+// Submit Funtion
+sub.onclick = (e) => {
+    e.preventDefault();
+    if(textareaInput.value === "") 
+        confirm("Note Is Empty!");
+    else{
+        createNote(addNote(nb, textareaInput.value));
+        nb++;
+        textareaInput.value = "";
     }
-    if (e.target.className  === "savebtn" && e.target.previousElementSibling.hasAttribute("contenteditable")){
-        e.target.previousElementSibling.removeAttribute("contenteditable");
+}
+
+var edit = "" ;
+// Delete Function 
+document.addEventListener("click", function (e) {
+    
+    if (e.target.className === "closebtn"){
+        notes = notes.filter(function(el){
+            return el["content"] === e.target.parentElement.children[3].textContent ? "" : el ;
+        })
+        e.target.parentElement.remove();
+    }
+    else if (e.target.className === "editbtn"){
+        e.target.nextElementSibling.setAttribute('contenteditable','true');
+        e.target.nextElementSibling.focus();
+        edit = e.target.parentElement.children[3].textContent;
+    }
+    
+    else if (e.target.className === "savebtn" && e.target.previousElementSibling.hasAttribute("contenteditable")){
+        
+        notes = notes.filter(function(ele){
+            return  ele["content"] === edit ? ele["content"] = e.target.previousElementSibling.textContent : ele ;  
+        });
+        e.target.previousElementSibling.removeAttribute('contenteditable');
         // Date&Time Config
         let dateNows = new Date();
         let dateValues = `${dateNows.getMonth()+1}/${dateNows.getDate()}/${dateNows.getFullYear()}`;
         let timeValues = `${dateNows.getHours()}:${dateNows.getMinutes()}:${dateNows.getSeconds()}`;
         let APMs = dateNows.getHours() <= 12 ? "AM" : "PM";
-        console.log("Save done !");
-        e.target.parentElement.children[1].textContent = `${dateValues}, ${timeValues} ${APMs}`;
-        }       
-});
+        e.target.parentElement.children[1].textContent  = `${dateValues}, ${timeValues} ${APMs}`; 
+    }
+
+    // add new notes to localStorage
+    localStorage.setItem("Notes",JSON.stringify(notes));
+    
+})
+
 // Scroll Visiblity
 let scrollbtn = document.querySelector(".Up");
 window.onscroll = function () {
