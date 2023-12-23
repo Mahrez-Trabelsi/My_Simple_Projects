@@ -86,7 +86,7 @@ document.addEventListener("click", function (e) {
     else if (e.target.className === "editbtn"){
         e.target.nextElementSibling.setAttribute('contenteditable','true');
         e.target.nextElementSibling.focus();
-        edit = e.target.parentElement.children[3].textContent;
+        edit = e.target.parentElement.children[2].textContent;
     }
     
     else if (e.target.className === "savebtn" && e.target.previousElementSibling.hasAttribute("contenteditable")){
