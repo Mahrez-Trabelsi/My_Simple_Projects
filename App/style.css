@@ -84,7 +84,7 @@ body {
     min-width: 96%;
     max-width: 96%;
     margin-left: -11px;
-    margin-top: -15px;
+    margin-top: 5px;
     box-shadow: 3px 3px 6px -3px black;
     border-radius: 15px;
 }
@@ -126,7 +126,7 @@ body {
     word-wrap: wrap;
     word-break:break-all;
     width: 80%;
-    margin:5px 20% ;
+    margin:15px 20% ;
     border: 1px solid rgba(0, 0, 0, 0.208);
     padding: 15px;
     border-top-right-radius: 20px;

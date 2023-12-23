@@ -6,25 +6,18 @@ let sub = document.getElementById("sub");
 let notes = JSON.parse(localStorage.getItem("Notes")) || [];
 
 // Add Note Function
-const addNote = (id, content) => {
+const addNote = (content) => {
     notes.push({
-        id:id,
         content:content
     });
 
     // add new added notes to localStorage
     localStorage.setItem("Notes",JSON.stringify(notes));
-
-    return {id, content};
+    return {content};
 }
 
-
+// Create note
 const createNote = (note) => {
-    // Date&Time Config
-    let dateNow = new Date();
-    let dateValue = `${dateNow.getMonth()+1}/${dateNow.getDate()}/${dateNow.getFullYear()}`;
-    let timeValue = `${dateNow.getHours()}:${dateNow.getMinutes()}:${dateNow.getSeconds()}`;
-    let APM = dateNow.getHours() <= 12 ? "AM" : "PM";
 
     //remove Default Note 
     document.querySelector(".added-notes").style.display = "none";
@@ -34,8 +27,6 @@ const createNote = (note) => {
     addNote.className = "added-notes-M";
     
     // Create HTML Elements
-    let myH4 = document.createElement("h4");
-    myH4.innerText = `${dateValue}, ${timeValue} ${APM}`;
     let myP = document.createElement("div");
     myP.innerText = note.content;
     myP.className = "edit";
@@ -60,7 +51,7 @@ const createNote = (note) => {
 
 
     //Append To Parent Element
-    addNote.append(closebtn,myH4,editbtn,myP,savebtn);
+    addNote.append(closebtn,editbtn,myP,savebtn);
     
     //Add Note To Body
     document.body.append(addNote);
@@ -69,7 +60,7 @@ const createNote = (note) => {
 // Create DOM forEach Note
 notes.forEach(createNote);
 
-var nb = notes.length;
+
 
 // Submit Funtion
 sub.onclick = (e) => {
@@ -77,8 +68,7 @@ sub.onclick = (e) => {
     if(textareaInput.value === "") 
         confirm("Note Is Empty!");
     else{
-        createNote(addNote(nb, textareaInput.value));
-        nb++;
+        createNote(addNote( textareaInput.value));
         textareaInput.value = "";
     }
 }
@@ -86,10 +76,10 @@ sub.onclick = (e) => {
 var edit = "" ;
 // Delete Function 
 document.addEventListener("click", function (e) {
-    
+    e.preventDefault();
     if (e.target.className === "closebtn"){
         notes = notes.filter(function(el){
-            return el["content"] === e.target.parentElement.children[3].textContent ? "" : el ;
+            return el["content"] === e.target.parentElement.children[2].textContent ? "" : el ;
         })
         e.target.parentElement.remove();
     }
@@ -105,14 +95,7 @@ document.addEventListener("click", function (e) {
             return  ele["content"] === edit ? ele["content"] = e.target.previousElementSibling.textContent : ele ;  
         });
         e.target.previousElementSibling.removeAttribute('contenteditable');
-        // Date&Time Config
-        let dateNows = new Date();
-        let dateValues = `${dateNows.getMonth()+1}/${dateNows.getDate()}/${dateNows.getFullYear()}`;
-        let timeValues = `${dateNows.getHours()}:${dateNows.getMinutes()}:${dateNows.getSeconds()}`;
-        let APMs = dateNows.getHours() <= 12 ? "AM" : "PM";
-        e.target.parentElement.children[1].textContent  = `${dateValues}, ${timeValues} ${APMs}`; 
     }
-
     // add new notes to localStorage
     localStorage.setItem("Notes",JSON.stringify(notes));
     
