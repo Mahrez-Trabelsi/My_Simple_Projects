@@ -1,7 +1,7 @@
 // DOM Elements
 const textareaInput = document.querySelector("textarea");
 let sub = document.getElementById("sub");
-
+let cls = document.querySelector(".clear");
 // array of notes
 let notes = JSON.parse(localStorage.getItem("Notes")) || [];
 
@@ -117,4 +117,11 @@ scrollbtn.onclick = function () {
         top:0,
         left:0,
         behavior: "smooth",});
+}
+
+// Clear Function
+cls.onclick = function (e) {
+    e.preventDefault();
+    notes = null;
+    window.location.reload();
 }
